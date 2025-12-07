@@ -1,8 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:platform_channel/src/core/utils/time_utils.dart';
 import 'package:platform_channel/src/features/fetch_sms_list/controller/sms_service.dart';
 import 'package:platform_channel/src/model/sms_model.dart';
+
+//isolate friendly parse method //Top-level isolate function
+List<SmsModel> parseSmsList(List<dynamic> rawList){
+  return rawList.map((e) => SmsModel.fromJson(Map<String,dynamic>.from(e))).toList();
+}
 
 class SmsListScreen extends StatefulWidget{
   const SmsListScreen({super.key});
@@ -27,9 +33,9 @@ class _SmsListScreenState extends State<SmsListScreen> {
     print("SMS Permision: $allowed");
   }
 
-
   void loadSms() async{
-    final data = await SmsService.getSmsList();
+    final raw = await SmsService.getSmsListRaw(); //only maps
+    final data = await compute(parseSmsList, raw);
     setState(() {
       smsList = data;
     });
@@ -90,7 +96,6 @@ class _SmsListScreenState extends State<SmsListScreen> {
                 color: Colors.black54
               ),),
             )
-
           ],
         );
       }),

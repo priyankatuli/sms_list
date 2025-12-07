@@ -8,11 +8,12 @@ class SmsService {
   static const platform = MethodChannel("sms_channel"); //flutter side e method channel create kora
   static const platform1 = MethodChannel("sms_permission_channel");
 
-  static Future<List<SmsModel>> getSmsList() async{
+  //isolate shudhu simple list ba map nite parbe
+  static Future<List<dynamic>> getSmsListRaw() async{
 
       final List<dynamic> result = await platform.invokeMethod("getSmsList"); //flutter side theke native ke call korbe
-      return
-        result.map((e) => SmsModel.fromJson(Map<String,dynamic>.from(e))).toList();
+      return result;
+       // result.map((e) => SmsModel.fromJson(Map<String,dynamic>.from(e))).toList(); //eita main thread e run hoy
   }
 
   static Future<bool> requestPermission() async{

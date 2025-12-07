@@ -21,9 +21,7 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
 
         MethodChannel(
-            flutterEngine.dartExecutor.binaryMessenger,
-            CHANNEL
-        ).setMethodCallHandler { call, result ->
+            flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             if (call.method == "getSmsList") {
                 pendingResult = result
                 checkPermissionAndFetchSms()
@@ -87,7 +85,6 @@ class MainActivity : FlutterActivity() {
             }
         }
         cursor?.close()
-
         return smsList
     }
 }

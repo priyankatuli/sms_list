@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:platform_channel/src/core/utils/time_utils.dart';
-import 'package:platform_channel/src/features/fetch_sms_list/controller/sms_service.dart';
+import 'package:platform_channel/src/features/fetch_sms_list/service/sms_service.dart';
 import 'package:platform_channel/src/model/sms_model.dart';
 
 //isolate friendly parse method //Top-level isolate function

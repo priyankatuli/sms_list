@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
+//import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:platform_channel/src/core/utils/time_utils.dart';
+//import 'package:platform_channel/src/core/utils/time_utils.dart';
 import 'package:platform_channel/src/features/fetch_sms_list/service/sms_service.dart';
 import 'package:platform_channel/src/model/sms_model.dart';
 
@@ -19,27 +19,46 @@ class SmsListScreen extends StatefulWidget{
 
 class _SmsListScreenState extends State<SmsListScreen> {
 
-  List<SmsModel> smsList = [];
+  //List<SmsModel> smsList = [];
+  double totalCashIn = 0.0;
 
   @override
   void initState(){
     super.initState();
-    checkPermission();
-    loadSms();
+    //checkPermission();
+    //loadSms();
+    loadTotalCashIn();
   }
 
-  void checkPermission() async{
+ /* void checkPermission() async{
     bool allowed = await SmsService.requestPermission();
     print("SMS Permision: $allowed");
   }
+  */
 
-  void loadSms() async{
-    final raw = await SmsService.getSmsListRaw(); //only maps
+  /*void loadSms() async{
+    final raw = await SmsService.getBkashSms(); //only maps
     final data = await compute(parseSmsList, raw);
     setState(() {
       smsList = data;
     });
+  }*/
+  void loadTotalCashIn() async {
+    bool allowed = await SmsService.requestPermission();
+
+    if (allowed) {
+      final total = await SmsService.getTotalCashIn();
+      setState(() {
+        totalCashIn = total;
+      });
+    } else {
+      print("Permission Denied!");
+      setState(() {
+        totalCashIn = 0.0;
+      });
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +67,7 @@ class _SmsListScreenState extends State<SmsListScreen> {
      appBar: AppBar(
        elevation: 0,
        backgroundColor: Colors.grey.shade300,
-       title: Text('Google Messages',style: GoogleFonts.roboto(
+       title: Text('Bkash Details',style: GoogleFonts.roboto(
          fontSize: 20,
          color: Colors.black,
          fontWeight: FontWeight.w800
@@ -68,7 +87,50 @@ class _SmsListScreenState extends State<SmsListScreen> {
 
        ],
      ),
-      body: smsList.isEmpty ? Center(child: CircularProgressIndicator(),) :
+      body: Padding(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1.5,
+                      color: Colors.grey.shade300
+                    ),
+                    gradient: LinearGradient(colors: [
+                      Colors.grey,
+                      Colors.purple.shade300
+                    ]),
+                    borderRadius: BorderRadius.circular(20),
+                    shape: BoxShape.rectangle
+                  ),
+                  width: double.maxFinite,
+                  height: 150,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("Total Cash In",style: GoogleFonts.roboto(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black
+                      ),),
+                      SizedBox(height: 8,),
+                      Text("Tk ${totalCashIn.toStringAsFixed(2)}",
+                        style: GoogleFonts.roboto(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.black
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+        ),
+      /*smsList.isEmpty ? Center(child: CircularProgressIndicator(),) :
       ListView.builder(
           itemCount: smsList.length,
           itemBuilder: (_,index){
@@ -76,10 +138,12 @@ class _SmsListScreenState extends State<SmsListScreen> {
         return Column(
           children: [
             ListTile(
-              leading: CircleAvatar(
+              /*leading: CircleAvatar(
                 backgroundColor: Colors.blue.shade200,
                 child: Icon(Icons.person_2_rounded,color: Colors.blue,),
               ),
+
+               */
               title: Text(sms.address,style: GoogleFonts.roboto(
                 fontSize: 16,
                 color: Colors.black,
@@ -99,6 +163,7 @@ class _SmsListScreenState extends State<SmsListScreen> {
           ],
         );
       }),
+       */
     );
   }
 }

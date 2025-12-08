@@ -16,6 +16,15 @@ class SmsService {
        // result.map((e) => SmsModel.fromJson(Map<String,dynamic>.from(e))).toList(); //eita main thread e run hoy
   }
 
+  static Future <List<dynamic>> getBkashSms() async{
+    return await platform.invokeMethod("getBkashSmsList");
+
+  }
+  static Future<double> getTotalCashIn() async{
+    final double total = await platform.invokeMethod("getTotalCashIn");
+    return total;
+  }
+
   static Future<bool> requestPermission() async{
      return await platform1.invokeMethod("requestSmsPermission"); // flutter theke native e permission request pathai
   }

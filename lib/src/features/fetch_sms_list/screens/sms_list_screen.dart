@@ -21,20 +21,14 @@ class _SmsListScreenState extends State<SmsListScreen> {
 
   //List<SmsModel> smsList = [];
   double totalCashIn = 0.0;
+  double totalCashOut = 0.0;
 
   @override
   void initState(){
     super.initState();
-    //checkPermission();
-    //loadSms();
-    loadTotalCashIn();
+    loadTotalCashSummery();
   }
 
- /* void checkPermission() async{
-    bool allowed = await SmsService.requestPermission();
-    print("SMS Permision: $allowed");
-  }
-  */
 
   /*void loadSms() async{
     final raw = await SmsService.getBkashSms(); //only maps
@@ -43,18 +37,19 @@ class _SmsListScreenState extends State<SmsListScreen> {
       smsList = data;
     });
   }*/
-  void loadTotalCashIn() async {
+  void loadTotalCashSummery() async {
     bool allowed = await SmsService.requestPermission();
-
     if (allowed) {
-      final total = await SmsService.getTotalCashIn();
-      setState(() {
-        totalCashIn = total;
-      });
+      final summary = await SmsService.getCashSummary();
+        setState(() {
+          totalCashIn = summary["cashIn"];
+          totalCashOut = summary["cashOut"];
+        });
     } else {
       print("Permission Denied!");
       setState(() {
         totalCashIn = 0.0;
+        totalCashOut = 0.0;
       });
     }
   }
@@ -111,7 +106,7 @@ class _SmsListScreenState extends State<SmsListScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("Total Cash In",style: GoogleFonts.roboto(
+                      Text("Total Cash In\n for this month",style: GoogleFonts.roboto(
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
                           color: Colors.black
@@ -126,44 +121,44 @@ class _SmsListScreenState extends State<SmsListScreen> {
                       )
                     ],
                   ),
-                )
-              ],
-            ),
-        ),
-      /*smsList.isEmpty ? Center(child: CircularProgressIndicator(),) :
-      ListView.builder(
-          itemCount: smsList.length,
-          itemBuilder: (_,index){
-            final sms = smsList[index];
-        return Column(
-          children: [
-            ListTile(
-              /*leading: CircleAvatar(
-                backgroundColor: Colors.blue.shade200,
-                child: Icon(Icons.person_2_rounded,color: Colors.blue,),
-              ),
-
-               */
-              title: Text(sms.address,style: GoogleFonts.roboto(
-                fontSize: 16,
-                color: Colors.black,
-              )),
-              subtitle: Text(sms.body,
-                maxLines: 2,
-                style: TextStyle(
-                fontSize: 13,
-                color: Colors.grey.withOpacity(0.9),
-                overflow: TextOverflow.ellipsis,
-              ),),
-              trailing: Text(TimeUtils.getTimeAgo(sms.date),style: GoogleFonts.roboto(
-                fontSize: 15,
-                color: Colors.black54
-              ),),
-            )
-          ],
-        );
-      }),
-       */
-    );
+                ),
+                SizedBox(height: 10,),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 1.5,
+                          color: Colors.grey.shade300
+                      ),
+                      gradient: LinearGradient(colors: [
+                        Colors.grey,
+                        Colors.purple.shade300
+                      ]),
+                      borderRadius: BorderRadius.circular(20),
+                      shape: BoxShape.rectangle
+                  ),
+                  width: double.maxFinite,
+                  height: 150,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("Total Cash out\nfor this month",style: GoogleFonts.roboto(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black
+                      ),),
+                      SizedBox(height: 8,),
+                      Text("Tk ${totalCashOut.toStringAsFixed(2)}",
+                        style: GoogleFonts.roboto(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.black
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+      ])
+    ));
   }
 }

@@ -16,6 +16,7 @@ class MainActivity : FlutterActivity() {
     private val PERMISSION_CHANNEL = "sms_permission_channel"
     private val REQUEST_SMS_PERMISSION = 1001
     private var pendingResult: MethodChannel.Result? = null
+    private var pendingPermissionResult: MethodChannel.Result? = null
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -27,7 +28,8 @@ class MainActivity : FlutterActivity() {
                 if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
                     result.success(true)
                 } else {
-                    pendingResult = result
+                    //permission result handle korbe
+                    pendingPermissionResult = result
                     ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_SMS_PERMISSION)
                 }
             } else {
@@ -61,6 +63,7 @@ class MainActivity : FlutterActivity() {
                     "cashOut" to total["cashOut"]
                 ))
         } else {
+            //sms fetch result handle korbe
             pendingResult = result
             // Request permission
             ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_SMS_PERMISSION)
@@ -73,8 +76,11 @@ class MainActivity : FlutterActivity() {
         grantResults: IntArray
     ) {
         if (requestCode == REQUEST_SMS_PERMISSION) {
-            val granted =
-                grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            val granted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+
+            pendingPermissionResult?.success(granted)
+            pendingPermissionResult = null
+
             pendingResult?.let { result ->
                 if (granted) {
                     val total = fetchSms()
@@ -95,18 +101,18 @@ class MainActivity : FlutterActivity() {
 
     private fun fetchSms(): Map<String,Double>{    //Double { // List<Map<String, Any>> { //funtion return type
         //val smsList = mutableListOf<Map<String, Any>>()
-        val uriSms: Uri = Uri.parse("content://sms/inbox")// android e sms database
+        val uriSms: Uri = Uri.parse("content://sms/inbox")// SMS database of android
 
+       //first day of current month in miliseconds
         val calendar = java.util.Calendar.getInstance() // calender er ekta instance create kora
         calendar.set(java.util.Calendar.DAY_OF_MONTH, 1) //current day jai hok 1 tarikh set kore
         calendar.set(java.util.Calendar.HOUR_OF_DAY, 0) //eikhane hour ke 0 korse
         calendar.set(java.util.Calendar.MINUTE, 0)
         calendar.set(java.util.Calendar.SECOND, 0)
         calendar.set(java.util.Calendar.MILLISECOND, 0) //mili Second reset korse
-        val firstDayOfMonth =
-            calendar.timeInMillis //calender object er present somoy ke milisecond e convert kora
+        val firstDayOfMonth = calendar.timeInMillis //calender object er present somoy ke milisecond e convert kora
 
-        //where address like %bKash%
+        //where address like %bKash%//SQL query
         val selection = "(Address LIKE ? OR body LIKE ?) AND date >= ?"
         val selectionArgs = arrayOf("%bKash%", "%bKash%", firstDayOfMonth.toString())
         var totalCashIn = 0.0
@@ -126,9 +132,7 @@ class MainActivity : FlutterActivity() {
         cursor?.let { // cursor diye sms loop
             if (cursor.moveToFirst()) {
                 do {
-                    //val address = cursor.getString(cursor.getColumnIndexOrThrow("address"))
                     val body = cursor.getString(cursor.getColumnIndexOrThrow("body"))
-                    //val date = cursor.getString(cursor.getColumnIndexOrThrow("date"))
 
                     //find amount inside SMS body //cash in
                     val match = amountRegex.findAll(body)

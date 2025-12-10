@@ -20,10 +20,13 @@ class SmsService {
     return await platform.invokeMethod("getBkashSmsList");
 
   }*/
- static Future<Map<String,dynamic>> getCashSummary() async{
+ /*static Future<Map<String,dynamic>> getCashSummary() async{
    final result = await platform.invokeMethod("getCashSummary");
    return Map<String,dynamic>.from(result);
- }
+ } */
+  static Future<List<dynamic>> getAllSms() async{
+    return await platform.invokeMethod("getAllSms");
+  }
 
   //Request Permission
   static Future<bool> requestPermission() async{

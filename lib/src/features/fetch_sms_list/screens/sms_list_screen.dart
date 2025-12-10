@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:platform_channel/src/core/constants/app_strings.dart';
+import 'package:platform_channel/src/core/enum/provider_type.dart';
 import 'package:platform_channel/src/features/fetch_sms_list/controller/sms_summary_controller.dart';
+import 'package:platform_channel/src/features/fetch_sms_list/screens/widgets/cash_summary_widget.dart';
 import 'package:platform_channel/src/features/fetch_sms_list/screens/widgets/custom_app_bar.dart';
-import 'package:platform_channel/src/features/fetch_sms_list/screens/widgets/sms_summary_card.dart';
-
 //isolate friendly parse method //Top-level isolate function
 /*List<SmsModel> parseSmsList(List<dynamic> rawList){
   return rawList.map((e) => SmsModel.fromJson(Map<String,dynamic>.from(e))).toList();
@@ -44,7 +44,7 @@ class SmsListScreen extends StatelessWidget{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Obx(() {
+                /*Obx(() {
                   print("CashIn updated: ${controller.totalCashIn.value}");
                   return SmsSummaryCard(
                          title: AppStrings.cashInTitle,
@@ -59,6 +59,41 @@ class SmsListScreen extends StatelessWidget{
                           );
                         }
                 ),
+                 */
+                //DropDown
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                      child: Obx(() => DropdownButton<ProviderType>(
+                        value: controller.currentProvider.value,
+                        isExpanded: true,
+                        items: ProviderType.values.map((e){
+                          return DropdownMenuItem(
+                              value: e,
+                              child: Text(e.displayName,
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.bold
+                                ),)
+                          );
+                        }).toList(),
+                        onChanged: (value){
+                          if(value!=null) {
+                            controller.currentProvider.value = value;
+                            controller.filterByProvider(value);
+                          }
+                        },
+                      )),
+                  ),
+                ),
+                SizedBox(height: 10,),
+                CashSummaryWidget(
+                            cashIn: controller.totalCashIn ,
+                            cashOut: controller.totalCashOut
+                        )
 
       ])
     ));

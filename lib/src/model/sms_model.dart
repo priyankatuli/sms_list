@@ -11,8 +11,7 @@ class SmsModel{
       address: json["address"] ?? "",
       body: json["body"] ?? "",
       date: DateTime.fromMillisecondsSinceEpoch(
-        int.parse(json["date"]),
-    ),
+        int.parse(json["date"]),),
     );
   }
 

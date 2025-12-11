@@ -4,6 +4,7 @@ class AppStrings{
   //cash in
   static const String cashInTitle = 'Total Cash in\nfor this month';
   static const String cashOuTitle = 'Total Cash out\nfor this month';
+  static const String currentBalanceTitle = 'Current Balance';
 
 
 

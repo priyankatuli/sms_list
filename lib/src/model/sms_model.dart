@@ -1,5 +1,4 @@
 class SmsModel{
-
   final String address;
   final String body;
   final DateTime date;

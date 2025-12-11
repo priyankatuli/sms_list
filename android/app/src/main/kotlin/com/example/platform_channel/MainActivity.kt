@@ -26,11 +26,7 @@ class MainActivity : FlutterActivity() {
         ).setMethodCallHandler { call, result ->
             if (call.method == "requestSmsPermission") {
                 val permission = Manifest.permission.READ_SMS
-                if (ContextCompat.checkSelfPermission(
-                        this,
-                        permission
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
+                if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
                     result.success(true)
                 } else {
                     //permission result handle korbe

@@ -4,10 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:platform_channel/src/core/constants/app_strings.dart';
 
 class CashSummaryWidget extends StatelessWidget {
-  const CashSummaryWidget({super.key, required this.cashIn, required this.cashOut});
+  const CashSummaryWidget({super.key, required this.cashIn, required this.cashOut, required this.availableBalance});
 
   final RxDouble cashIn;
   final RxDouble cashOut;
+  final RxDouble availableBalance;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class CashSummaryWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 14,vertical: 10),
           child: Column(
               children: [
+                SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -45,7 +47,24 @@ class CashSummaryWidget extends StatelessWidget {
                           fontSize: 15,
                           fontWeight: FontWeight.bold
                       ),)
-                  ],),]
+                  ],),
+                //SizedBox(height: 10,),
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(AppStrings.currentBalanceTitle,style: GoogleFonts.roboto(
+                      fontSize: 15,
+                    ),),
+                    SizedBox(width: 10,),
+                    Text("Tk ${availableBalance.value.toStringAsFixed(2)}",
+                      style: GoogleFonts.roboto(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold
+                      ),)
+                  ],),
+                SizedBox(height: 10,),
+              ]
           ),
         ),
       ));

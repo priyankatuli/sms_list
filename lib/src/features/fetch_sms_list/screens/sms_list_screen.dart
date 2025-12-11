@@ -69,10 +69,12 @@ class SmsListScreen extends StatelessWidget{
                   child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
                       child: Obx(() => DropdownButton<ProviderType>(
+                        dropdownColor: Colors.blueGrey.shade100,
                         value: controller.currentProvider.value,
                         isExpanded: true,
                         items: ProviderType.values.map((e){
                           return DropdownMenuItem(
+
                               value: e,
                               child: Text(e.displayName,
                                 style: GoogleFonts.roboto(
@@ -92,7 +94,8 @@ class SmsListScreen extends StatelessWidget{
                 SizedBox(height: 10,),
                 CashSummaryWidget(
                             cashIn: controller.totalCashIn ,
-                            cashOut: controller.totalCashOut
+                            cashOut: controller.totalCashOut,
+                           availableBalance: controller.currentBalance,
                         )
 
       ])

@@ -92,20 +92,20 @@ class SmsSummaryController extends GetxController{
   }
       void _extractAmounts(String body,DateTime smsDate){
 
-        for(var match in cashInRegex.allMatches(body)){
+        for(RegExpMatch match in cashInRegex.allMatches(body)){
            double amount = double.tryParse(match.group(2)?.replaceAll(",","") ?? "0") ?? 0.0;
            print("Cash in match: ${match.group(0)}, amount: ${match.group(2)}");
            totalCashIn.value += amount;
           }
 
-        for(var match in cashOutRegex.allMatches(body)){
+        for(RegExpMatch match in cashOutRegex.allMatches(body)){
           double amount  = double.tryParse(match.group(2)?.replaceAll(",", "") ?? "0") ?? 0.0;
           print("Cash out match: ${match.group(0)}, amount: ${match.group(2)}");
           totalCashOut.value += amount;
 
         }
 
-        for(var match in balanceRegex.allMatches(body)){
+        for(RegExpMatch match in balanceRegex.allMatches(body)){
           double balance = double.tryParse(match.group(2)?.replaceAll(",", "") ?? "0") ?? 0.0;
 
           if(latestBalanceDate == null || smsDate.isAfter(latestBalanceDate!)){

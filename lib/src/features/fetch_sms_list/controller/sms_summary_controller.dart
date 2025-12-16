@@ -34,6 +34,7 @@ class SmsSummaryController extends GetxController{
      if(allowed){
        allSmsList = await SmsService.getAllSms();
        print("Total Sms Fetched: ${allSmsList.length}");
+
        //decending order e sort korbo karon oldest to newest value show kore
        allSmsList.sort((a,b){
          int timeA = int.tryParse(a["date"] ?? "0") ?? 0;
@@ -60,12 +61,12 @@ class SmsSummaryController extends GetxController{
       String address = sms["address"] ?? "";
       //print("Checking SMS: address=$address, body=$body");
 
-      String rawTimeStamp = sms["date"] ?? "0"; //kotlin theke j date ta j ashtase jeta string
+      String rawTimeStamp = sms["date"] ?? "0"; //kotlin - date -type- string
       int timeStamp = int.tryParse(rawTimeStamp) ?? 0;
-      DateTime smsDate = DateTime.fromMillisecondsSinceEpoch(timeStamp); //particular sms er date & time
+      DateTime smsDate = DateTime.fromMillisecondsSinceEpoch(timeStamp); //particular sms date & time
 
       //current month filter
-      if (smsDate.isBefore(firstDayOfMonth)) continue; //sms er date ki ei masher 1 tarikher age
+      if (smsDate.isBefore(firstDayOfMonth)) continue; //sms date - before 1 date
 
       bool matchProvider = false;
       switch (providerType) {
@@ -94,7 +95,7 @@ class SmsSummaryController extends GetxController{
           matchProvider =  body.contains("BRAC BANK") || address.contains("BRAC BANK");
       }
 
-      if (!matchProvider) continue; //skip korbe jodi ei masher age hoy fole ei masher sms gulo _extractAmounts e jabe
+      if (!matchProvider) continue; //skip if before these month //and if these month then go to _extractAmounts
 
       _extractAmounts(body,smsDate);
     }

@@ -1,5 +1,4 @@
-
-//enum value lowerCamelCase hoy
+//enum value - lowerCamelCase
 enum ProviderType{
   bKash,
   nagad,
@@ -10,7 +9,7 @@ enum ProviderType{
   onebank,
   bracbank
 }
-//extension use to display text name exactly
+//use extension to display text name exactly
 extension ProviderTypeExt on ProviderType{
   String get displayName{
     switch(this){

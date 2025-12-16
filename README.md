@@ -1,15 +1,34 @@
-# platform_channel
+## 📱SMS Cash Summary App
 
-Sms Cash Summery App
-## Getting Started
+#### This is a small utility application that fetches and analyzes SMS data from the user's device based on specific provider names (such as mobile financial services). The app reads relevant SMS messages and categorizes them into Cash In and Cash Out transactions, then calculates the total amounts accordingly.
 
-This project is a starting point for a Flutter application.
+## ✨Features
+- Fetches SMS messages from the device inbox using Android platform channels
 
-A few resources to get you started if this is your first Flutter project:
+- Filters SMS based on predefined provider names
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Separates transactions into:
+   - Cash In
+   - Cash Out
+- Calculates and displays:
+   - Total Cash In amount for Current Month
+   - Total Cash Out amount for Current Month
+   - Overall transaction summary
+- Uses a clean and modular feature-first architecture
+- Permission handling for secure SMS access
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🏗 Architecture
+#### The project follows a feature-first architecture, where each feature is organized with its own:
+- Controllers
+- Services
+- Models
+- Screens
+- Utility classes
+## 🛠 Technologies
+- Flutter
+- Dart
+- Kotlin(Android Platform Channel)
+- GetX for State Management
+- Regular Expressions for SMS parsing
+## 🔐 Permissions
+#### The app requests READ_SMS permission to access and analyze SMS data locally on the device. No SMS data is stored or shared externally.

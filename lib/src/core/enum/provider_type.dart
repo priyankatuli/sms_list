@@ -5,7 +5,10 @@ enum ProviderType{
   nagad,
   rocket,
   krishibank,
-  upay
+  upay,
+  primebank,
+  onebank,
+  bracbank
 }
 //extension use to display text name exactly
 extension ProviderTypeExt on ProviderType{
@@ -21,6 +24,12 @@ extension ProviderTypeExt on ProviderType{
         return "Krishi Bank";
       case ProviderType.upay:
         return "Upay";
+      case ProviderType.primebank:
+        return "Prime Bank";
+      case ProviderType.onebank:
+         return "One Bank";
+      case ProviderType.bracbank:
+        return "Brac Bank";
     }
   }
 }

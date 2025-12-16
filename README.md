@@ -1,7 +1,6 @@
 # platform_channel
 
-A new Flutter project.
-
+Sms Cash Summery App
 ## Getting Started
 
 This project is a starting point for a Flutter application.

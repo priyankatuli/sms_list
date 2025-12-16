@@ -74,7 +74,6 @@ class SmsListScreen extends StatelessWidget{
                         isExpanded: true,
                         items: ProviderType.values.map((e){
                           return DropdownMenuItem(
-
                               value: e,
                               child: Text(e.displayName,
                                 style: GoogleFonts.roboto(

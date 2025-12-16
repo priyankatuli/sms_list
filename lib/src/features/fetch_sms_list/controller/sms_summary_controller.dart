@@ -84,7 +84,16 @@ class SmsSummaryController extends GetxController{
         case ProviderType.upay:
           matchProvider = body.contains("upay") || address.contains("upay");
           break;
+        case ProviderType.primebank:
+          matchProvider = body.contains("PRIME BANK") || address.contains("PRIME BANK");
+          break;
+        case ProviderType.onebank:
+          matchProvider = body.contains("ONE BANK") || address.contains("ONE BANK");
+          break;
+        case ProviderType.bracbank:
+          matchProvider =  body.contains("BRAC BANK") || address.contains("BRAC BANK");
       }
+
       if (!matchProvider) continue; //skip korbe jodi ei masher age hoy fole ei masher sms gulo _extractAmounts e jabe
 
       _extractAmounts(body,smsDate);
